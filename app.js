@@ -18,7 +18,20 @@ function isInvalidInput(str) {
 
 function addEntry() {
     const targetInputContainer = document.querySelector(`#${entryDropdown.value} .input-container`);
-    const entryNumber = targetInputContainer.querySelectorAll('input[type="text"]').length + 1;
+
+    // If the last added name and calories inputs both exist and are empty, do nothing.
+    const nameInputs = targetInputContainer.querySelectorAll("input[type='text']");
+    const numberInputs = targetInputContainer.querySelectorAll("input[type='number']");
+    if (nameInputs.length > 0 && numberInputs.length > 0) {
+        const lastName = nameInputs[nameInputs.length - 1].value.trim();
+        const lastNumber = numberInputs[numberInputs.length - 1].value.trim();
+        if (lastName === '' || lastNumber === '') {
+            // Prevent adding another empty entry
+            return;
+        }
+    }
+
+    const entryNumber = nameInputs.length + 1;
     const HTMLString = `
   <label for="${entryDropdown.value}-${entryNumber}-name">Entry ${entryNumber} Name</label>
   <input type="text" id="${entryDropdown.value}-${entryNumber}-name" placeholder="Name" />
